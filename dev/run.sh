@@ -6,7 +6,12 @@
 # Stops a running Glowcast first, then starts the code in src/. Ctrl+C quits.
 
 set -euo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/flatpak-env.sh"
+repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+app=io.github.stensel8.glowcast
+if ! flatpak info "$app" >/dev/null 2>&1; then
+    echo "Build the Flatpak first: dev/build.sh" >&2
+    exit 1
+fi
 
 # A running Glowcast would just raise its old window. Stop it cleanly, so it
 # ends its entertainment stream on the bridge.
@@ -18,13 +23,9 @@ if pkill -TERM -f "python3? .*-m glowcast|/app/bin/glowcast"; then
     done
 fi
 
-# The same permissions as flatpak/io.github.stensel8.glowcast.yml
 exec flatpak run \
     --command=python3 \
-    --socket=pulseaudio \
-    --nofilesystem=xdg-run/pipewire-0 \
     --filesystem="$repo" \
     --env=PYTHONPATH="$repo/src" \
     --env=PYTHONUNBUFFERED=1 \
-    "${host_args[@]}" \
     "$app" -m glowcast "$@"

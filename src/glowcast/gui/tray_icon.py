@@ -13,8 +13,7 @@ gi.require_version("GdkPixbuf", "2.0")
 from gi.repository import GdkPixbuf, Gio, GLib
 
 APP_ID = "io.github.stensel8.glowcast"
-# Flatpak lets an app own names under its sandbox's id (dev/run.sh may borrow another app's)
-BUS_NAME = f"{os.environ.get('FLATPAK_ID', APP_ID)}.Tray"
+BUS_NAME = f"{APP_ID}.Tray"  # Flatpak lets an app own names under its own id
 ITEM_PATH = "/StatusNotifierItem"
 MENU_PATH = "/MenuBar"
 WATCHERS = ("org.kde.StatusNotifierWatcher", "org.freedesktop.StatusNotifierWatcher")

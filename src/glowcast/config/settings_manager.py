@@ -108,20 +108,6 @@ def _load(cls, data):
     return cls(**{k: v for k, v in (data or {}).items() if k in known})
 
 
-def _migrate(data: dict) -> dict:
-    """Carry settings over from older Glowcast versions."""
-    reading = data.get("reading_mode") or {}
-    if reading.get("on_at_startup"):
-        data.setdefault("ui", {})["lights_on_at_launch"] = True
-    for section in ("sync", "music"):
-        if (data.get(section) or {}).get("intensity") == "intense":
-            data[section]["intensity"] = "extreme"
-    if "lights" not in data:  # brightness used to be set per mode
-        old = (data.get("sync") or {}).get("brightness_scale")
-        data["lights"] = {"brightness": old if isinstance(old, (int, float)) else 1.0}
-    return data
-
-
 def _clamp(value, low, high, default):
     try:
         return max(low, min(high, type(default)(value)))
@@ -181,7 +167,7 @@ class SettingsManager:
     def _load_settings(self):
         if self._settings_file.exists():
             try:
-                data = _migrate(json.loads(self._settings_file.read_text()))
+                data = json.loads(self._settings_file.read_text())
                 for section in fields(Settings):
                     default = getattr(self._settings, section.name)
                     setattr(self._settings, section.name, _load(type(default), data.get(section.name)))

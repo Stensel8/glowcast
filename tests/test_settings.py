@@ -1,4 +1,4 @@
-"""Settings: loading older files, resetting, and dropping broken entries."""
+"""Settings: ignoring unknown keys, resetting, and dropping broken entries."""
 
 import json
 
@@ -16,25 +16,23 @@ def settings_in(tmp_path, monkeypatch):
     return tmp_path
 
 
-def test_settings_from_older_versions_still_load(settings_in):
+def test_unknown_settings_are_ignored(settings_in):
     (settings_in / "settings.json").write_text(
         json.dumps(
             {
                 "hue": {"bridge_ip": "10.0.0.2", "app_key": "k", "entertainment_config_id": CONFIG_ID},
-                "sync": {"fps": 30, "intensity": "intense", "brightness_scale": 0.4, "removed_setting": True},
+                "sync": {"intensity": "high", "removed_setting": True},
                 "music": {"palette": "neon", "unknown": 1},
-                "reading_mode": {"on_at_startup": True, "brightness": 30},
+                "removed_section": {"brightness": 30},
             }
         )
     )
     settings = settings_manager.SettingsManager()
     assert settings.hue.bridge_ip == "10.0.0.2"
     assert settings.hue.entertainment_config_id == CONFIG_ID
+    assert settings.sync.intensity == "high"
     assert settings.music.palette == "neon"
-    assert settings.sync.intensity == "extreme"  # renamed like Hue Sync's English labels
-    assert settings.ui.lights_on_at_launch  # the old reading light at startup
     assert settings.games.intensity == "moderate"
-    assert settings.lights.brightness == 0.4  # per-mode brightness became the global one
 
 
 def test_reset_keeps_pairing_and_updates_live_objects(settings_in):
