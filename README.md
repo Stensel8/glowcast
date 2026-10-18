@@ -68,8 +68,10 @@ Run the tests with `pytest`, and check style with `ruff check` and
 
 ## Credits
 
-Glowcast is based on [Lumux](https://github.com/enginkirmaci/lumux) by Engin
-Kırmacı, which brought Hue entertainment sync to Wayland. Thank you!
+Glowcast started as a fork of [Lumux](https://github.com/enginkirmaci/lumux) by
+Engin Kırmacı, which brought Hue entertainment sync to Wayland. Much of the sync
+logic comes from Lumux; Glowcast gives it its own look and way of working. Thank
+you!
 
 Glowcast is not affiliated with, endorsed by or connected to Signify or Philips
 Hue. Philips Hue and Hue Sync are trademarks of Signify Holding.

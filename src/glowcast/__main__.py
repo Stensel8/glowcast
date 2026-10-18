@@ -16,7 +16,10 @@ from glowcast.mode_manager import Mode
 from glowcast.shortcuts import GlobalShortcuts
 from glowcast.utils.logging import timed_print
 
-APP_ICON_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+# The app icon in a checkout; the Flatpak installs it into /app/share/icons instead.
+APP_ICON_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "flatpak")
+)
 LAUNCH_ATTEMPTS = 30  # every 2 s: the network may still be coming up after login
 
 

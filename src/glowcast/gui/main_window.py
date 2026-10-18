@@ -536,13 +536,19 @@ class MainWindow(Adw.ApplicationWindow):
                 "Sync your Philips Hue lights with your screen, games and music, "
                 "or set a scene, through your Hue entertainment area. Nothing you "
                 "watch or hear leaves your computer.\n\n"
+                "Glowcast started as a fork of Lumux by Engin Kırmacı, and much of "
+                "its sync logic comes from there. Glowcast gives it its own look and "
+                "a way of working of its own.\n\n"
                 "Not affiliated with Signify or Philips Hue."
             ),
+            copyright="© 2026 Sten T.\n© 2026 Engin Kırmacı (Lumux)",
             license_type=Gtk.License.MIT_X11,
             website="https://github.com/Stensel8/glowcast",
             issue_url="https://github.com/Stensel8/glowcast/issues",
         )
-        about.add_credit_section("Based on", ["Lumux by Engin Kırmacı https://github.com/enginkirmaci/lumux"])
+        about.add_credit_section(
+            "Forked from", ["Lumux by Engin Kırmacı https://github.com/enginkirmaci/lumux"]
+        )
         about.present(self)
 
     def _setup_tray_icon(self):
