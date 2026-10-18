@@ -43,6 +43,20 @@ and only light colours are sent to your bridge.
 - For keyboard shortcuts: the GlobalShortcuts portal (GNOME 48 or newer, KDE
   Plasma 6).
 
+## Install
+
+Download `glowcast-<version>-x86_64.flatpak` from the
+[latest release](https://github.com/Stensel8/glowcast/releases/latest) and
+install it:
+
+```bash
+flatpak install --user glowcast-0.1.1-x86_64.flatpak
+```
+
+If the GNOME platform isn't installed yet, Flatpak offers to get it from
+Flathub. To update, install a newer release the same way. What changed in each
+version is in the [changelog](CHANGELOG.md).
+
 ## First start
 
 1. Open **Settings > Hue Bridge** and choose **Connect New Bridge**. Glowcast
@@ -50,6 +64,38 @@ and only light colours are sent to your bridge.
 2. Pick your entertainment area.
 3. Choose a mode and press **Start light sync**. Video and Games ask once which
    monitors to share, and remember your choice.
+
+## Settings and starting over
+
+Glowcast keeps all its settings in one file:
+
+| How you run Glowcast         | Settings file                                                         |
+| ---------------------------- | --------------------------------------------------------------------- |
+| Flatpak                      | `~/.var/app/io.github.stensel8.glowcast/config/glowcast/settings.json` |
+| From source, outside Flatpak | `~/.config/glowcast/settings.json`                                    |
+
+It holds the bridge connection (address and keys), your entertainment area, the
+monitors you share, your own palettes and scenes, and every other setting.
+**Settings > General > Reset** puts the settings back to their defaults, but
+keeps the bridge connection and the monitor choice.
+
+To start completely fresh, for example when connecting to the bridge keeps
+failing, quit Glowcast and remove its folder:
+
+```bash
+rm -rf ~/.var/app/io.github.stensel8.glowcast  # Flatpak
+rm -rf ~/.config/glowcast                       # from source
+```
+
+Then set up the bridge again as under [First start](#first-start); you press
+the bridge's button once more. `flatpak uninstall --delete-data
+io.github.stensel8.glowcast` removes the app and its folder in one go.
+
+Two things live outside that folder. **Start at login** is a file the desktop
+writes, `~/.config/autostart/io.github.stensel8.glowcast.desktop`: switch it off
+in Settings first, or delete that file as well. And the desktop remembers the
+permissions it gave Glowcast; `flatpak permission-reset
+io.github.stensel8.glowcast` makes it ask again.
 
 ## Development
 
@@ -64,6 +110,12 @@ dev/run.sh    # run the code in src/ inside it
 
 Run the tests with `pytest`, and check style with `ruff check` and
 `ruff format --check`. Dependabot and Renovate keep the dependencies current.
+
+To release a version: set it in `pyproject.toml`, `src/glowcast/__init__.py`
+and a new `<release>` in the metainfo, describe it in a new section of
+`CHANGELOG.md`, then tag `vX.Y.Z` and publish a GitHub release with that
+section as its text. The Release workflow checks that all of these agree and
+attaches the Flatpak bundle.
 
 ## Credits
 
