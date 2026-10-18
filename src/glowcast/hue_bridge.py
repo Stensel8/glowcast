@@ -107,8 +107,13 @@ class HueBridge:
             "locations": config.get("locations", {}),
         }
 
-    def get_entertainment_configurations(self) -> list[dict]:
-        return [self._summary(c) for c in self.get_resources("entertainment_configuration")]
+    def get_entertainment_configurations(self, raise_errors: bool = False) -> list[dict]:
+        """The bridge's entertainment areas; [] if it can't be read, unless raise_errors."""
+        if raise_errors:
+            items = self._request("GET", "/resource/entertainment_configuration").get("data", [])
+        else:
+            items = self.get_resources("entertainment_configuration")
+        return [self._summary(c) for c in items]
 
     def get_entertainment_configuration(self, config_id: str) -> dict | None:
         try:

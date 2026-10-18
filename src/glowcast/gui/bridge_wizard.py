@@ -461,7 +461,8 @@ class BridgeWizard(Adw.NavigationPage):
     def _load_zones_worker(self):
         """Worker thread for loading zones."""
         try:
-            configs = self._temp_bridge.get_entertainment_configurations()
+            # Raise instead of returning [], so a failed read isn't shown as "no zones"
+            configs = self._temp_bridge.get_entertainment_configurations(raise_errors=True)
             GLib.idle_add(self._on_zones_loaded, configs)
         except Exception as e:
             GLib.idle_add(self._on_zones_error, str(e))
@@ -507,7 +508,7 @@ class BridgeWizard(Adw.NavigationPage):
         self.zone_spinner.stop()
         self.zone_spinner.set_visible(False)
         self.refresh_btn.set_sensitive(True)
-        self.zone_status_row.set_subtitle(f"Error: {error}")
+        self.zone_status_row.set_subtitle(f"Could not read the entertainment zones: {error}")
 
     def _update_zone_info(self, config: dict):
         """Update zone info display."""
