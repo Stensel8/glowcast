@@ -77,8 +77,6 @@ pip-selfcheck.json
 */*/*.pyc
 /docs/*
 
-# Output of dev/screenshots.sh
-/dev/screenshots/
 
 # Third-party installers kept locally for reference: never commit
 /src/Windows and Mac/

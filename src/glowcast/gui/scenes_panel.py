@@ -10,20 +10,12 @@ from glowcast.gui.widgets import (
     ColorSetEditor,
     brightness_row,
     mark_active,
-    new_scene_card,
-    scene_card,
+    new_tile,
+    palette_grid,
     switch_row,
+    tile,
 )
 from glowcast.presets import DEFAULT_SCENE, SCENE_PRESETS
-
-
-def _flowbox() -> Gtk.FlowBox:
-    box = Gtk.FlowBox(
-        selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=7, homogeneous=True, row_spacing=6
-    )
-    box.add_css_class("card")
-    box.add_css_class("palette-card")
-    return box
 
 
 class ScenesPanel(Gtk.Box):
@@ -37,7 +29,7 @@ class ScenesPanel(Gtk.Box):
         self._on_changed = on_changed
         self._buttons: dict[str, Gtk.Button] = {}
 
-        self._gallery = _flowbox()
+        self._gallery = palette_grid()
         self.append(self._gallery)
 
         self._bridge_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -76,13 +68,13 @@ class ScenesPanel(Gtk.Box):
             self._add_tile(self._gallery, key, scene.name, scene.colors)
         for entry in self._scenes.custom:
             self._add_tile(self._gallery, entry["id"], entry["name"], entry["colors"], custom=True)
-        add = new_scene_card("Create scene")
+        add = new_tile("New scene")
         add.connect("clicked", lambda _b: self._edit_scene(None))
         self._gallery.append(add)
         mark_active(self._buttons, self._scenes.scene)
 
     def _add_tile(self, box, key, name, colors, custom=False, tooltip="") -> None:
-        button = scene_card(colors, name, f"{name} — click again to edit" if custom else tooltip)
+        button = tile(colors, name, tooltip=f"{name} — click again to edit" if custom else tooltip)
         button.connect("clicked", self._on_tile_clicked, key, custom)
         box.append(button)
         self._buttons[key] = button
@@ -112,7 +104,7 @@ class ScenesPanel(Gtk.Box):
                 label.add_css_class("caption-heading")
                 label.add_css_class("dim-label")
                 self._bridge_groups.append(label)
-            grid = _flowbox()
+            grid = palette_grid()
             for scene in members:
                 self._add_tile(grid, scene.id, scene.name, scene.colors, tooltip=f"{scene.name} ({group})")
             self._bridge_groups.append(grid)

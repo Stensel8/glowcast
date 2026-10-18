@@ -1,7 +1,5 @@
 """Small widgets shared by the mode panels."""
 
-import math
-import random
 from collections.abc import Callable
 
 import cairo
@@ -70,91 +68,12 @@ class Swatch(Gtk.DrawingArea):
         ctx.fill()
 
 
-class SceneArt(Gtk.DrawingArea):
-    """A round scene picture painted from the scene's own colours.
-
-    Hue Sync shows a photo per scene; these are Glowcast's own artwork: soft
-    glowing blobs, placed the same way every time for a given scene name.
-    """
-
-    def __init__(self, colors, name: str, size: int = 72):
-        super().__init__(content_width=size, content_height=size, halign=Gtk.Align.CENTER)
-        rgbs = [hex_to_rgb(c) for c in colors] or [(0.6, 0.6, 0.6)]
-        darken = 0.5
-        if len(rgbs) == 1:  # a white scene: soft lighter and darker shades give it depth
-            color = rgbs[0]
-            rgbs = [color, tuple(c * 0.88 for c in color), tuple(c + (1 - c) * 0.6 for c in color)]
-            darken = 0.8
-        rng = random.Random(name)
-        self._base = tuple(sum(c[i] for c in rgbs) / len(rgbs) * darken for i in range(3))
-        self._blobs = [
-            (rng.uniform(0.15, 0.85), rng.uniform(0.15, 0.85), rng.uniform(0.35, 0.65), rgbs[i % len(rgbs)])
-            for i in range(max(4, len(rgbs)))
-        ]
-        self.set_draw_func(self._draw)
-
-    def _draw(self, _area, ctx, width, height):
-        size = min(width, height)
-        ctx.translate((width - size) / 2, (height - size) / 2)
-        ctx.arc(size / 2, size / 2, size / 2, 0, 2 * math.pi)
-        ctx.clip()
-        ctx.set_source_rgb(*self._base)
-        ctx.paint()
-        for x, y, radius, (r, g, b) in self._blobs:
-            glow = cairo.RadialGradient(x * size, y * size, 0, x * size, y * size, radius * size)
-            glow.add_color_stop_rgba(0, r, g, b, 0.95)
-            glow.add_color_stop_rgba(1, r, g, b, 0)
-            ctx.set_source(glow)
-            ctx.paint()
-        shine = cairo.RadialGradient(size * 0.35, size * 0.3, 0, size * 0.35, size * 0.3, size * 0.6)
-        shine.add_color_stop_rgba(0, 1, 1, 1, 0.2)
-        shine.add_color_stop_rgba(1, 1, 1, 1, 0)
-        ctx.set_source(shine)
-        ctx.paint()
-        edge = cairo.RadialGradient(size / 2, size / 2, size * 0.3, size / 2, size / 2, size / 2)
-        edge.add_color_stop_rgba(0, 0, 0, 0, 0)
-        edge.add_color_stop_rgba(1, 0, 0, 0, 0.3)
-        ctx.set_source(edge)
-        ctx.paint()
-
-
-def scene_card(colors, name: str, tooltip: str = "") -> Gtk.Button:
-    """Hue Sync's scene card shape: a round picture with the name below."""
-    content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-    content.append(SceneArt(colors, name))
-    content.append(_card_label(name))
-    return _card_button(content, tooltip or name)
-
-
-def new_scene_card(label: str) -> Gtk.Button:
-    content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-    plus = Gtk.Image(icon_name="list-add-symbolic", pixel_size=24, halign=Gtk.Align.CENTER)
-    plus.set_size_request(72, 72)
-    plus.add_css_class("new-scene")
-    content.append(plus)
-    content.append(_card_label(label))
-    return _card_button(content, label)
-
-
-def _card_label(text: str) -> Gtk.Label:
-    label = Gtk.Label(
-        label=text,
-        wrap=True,
-        lines=2,
-        ellipsize=Pango.EllipsizeMode.END,
-        justify=Gtk.Justification.CENTER,
-        max_width_chars=11,
-        width_chars=11,
-    )
-    label.add_css_class("caption")
-    return label
-
-
-def _card_button(content: Gtk.Widget, tooltip: str) -> Gtk.Button:
-    button = Gtk.Button(child=content, tooltip_text=tooltip, valign=Gtk.Align.START)
-    button.add_css_class("flat")
-    button.add_css_class("scene-card")
-    return button
+def palette_grid() -> Gtk.FlowBox:
+    """The card that holds a grid of tiles (music palettes, scenes)."""
+    box = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=8, homogeneous=True)
+    box.add_css_class("card")
+    box.add_css_class("palette-card")
+    return box
 
 
 def tile(colors, label: str, width: int = 64, height: int = 36, tooltip: str = "") -> Gtk.Button:

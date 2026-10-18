@@ -58,9 +58,8 @@ the GNOME platform are PyGObject and numpy; the Hue bridge, bridge discovery,
 the tray icon and the portals all use the standard library and Gio.
 
 ```bash
-dev/build.sh        # build and install the Flatpak (needs org.flatpak.Builder)
-dev/run.sh          # run the code in src/ inside it
-dev/screenshots.sh  # render every mode offscreen into dev/screenshots/
+dev/build.sh  # build and install the Flatpak (needs org.flatpak.Builder)
+dev/run.sh    # run the code in src/ inside it
 ```
 
 Run the tests with `pytest`, and check style with `ruff check` and

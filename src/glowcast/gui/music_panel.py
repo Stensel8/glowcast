@@ -11,6 +11,7 @@ from glowcast.gui.widgets import (
     intensity_row,
     mark_active,
     new_tile,
+    palette_grid,
     switch_row,
     tile,
 )
@@ -30,11 +31,7 @@ class MusicPanel(Gtk.Box):
         self._tick_id = None
         self._last_frame_time = None
 
-        self._palettes = Gtk.FlowBox(
-            selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=8, homogeneous=True
-        )
-        self._palettes.add_css_class("card")
-        self._palettes.add_css_class("palette-card")
+        self._palettes = palette_grid()
         self._fill_palettes()
         self.append(self._palettes)
 

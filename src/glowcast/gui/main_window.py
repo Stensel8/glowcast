@@ -53,9 +53,6 @@ CSS = """
 .palette-tile { padding: 4px; border-radius: 12px; }
 .palette-active { box-shadow: 0 0 0 3px @accent_color; }
 .new-tile { border: 2px dashed alpha(@window_fg_color, 0.3); border-radius: 8px; }
-.scene-card { padding: 8px 4px; border-radius: 14px; }
-.scene-card.palette-active { box-shadow: none; background: alpha(@accent_bg_color, 0.25); }
-.new-scene { border: 2px dashed alpha(@window_fg_color, 0.3); border-radius: 999px; }
 .sync-button { padding: 12px 36px; font-weight: bold; }
 """
 
