@@ -12,19 +12,31 @@
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/32/4e/8d7656ccaab3e81e97258b8a9bc5f0c8502513a92fb4ceb0a2cbfebc17bf/numpy-2.5.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
-                    "sha256": "3893adc2dc7c0412ba76777db55a049215d99c9aa3113003be8f49f4f1290ab9",
+                    "url": "https://files.pythonhosted.org/packages/16/d5/928078d2b28f26829b138b4a6c3980045022fb409f570657a224ae60ef4e/numpy-2.5.4-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+                    "sha256": "d549420b8858885cea8838a727842249218b9c1da24dd517e25c9c7a948310a3",
                     "only-arches": [
                         "x86_64"
-                    ]
+                    ],
+                    "x-checker-data": {
+                        "type": "json",
+                        "url": "https://pypi.org/pypi/numpy/json",
+                        "version-query": ".info.version",
+                        "url-query": "[.urls[] | select(.filename | test(\"-cp314-cp314-manylinux[^-]*_x86_64\\\\.whl$\"))][0].url"
+                    }
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/80/9e/15cdfcbd30a1544a46c9e487a00df331c4672450216538705a9e51fa6710/numpy-2.5.0-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
-                    "sha256": "750fb097caf26fa878746d9d119f6f9da12dedcbff1eea966c3e3447647c4a9e",
+                    "url": "https://files.pythonhosted.org/packages/63/d6/34b0a2b0741386a63025a65a2c09caaaaaad6d0ca95b66cd65c30dd7fcb5/numpy-2.5.4-cp314-cp314-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
+                    "sha256": "4054173604cd8658796053f1f3bc0befb68ec1c0762c57fdad61e199256a8617",
                     "only-arches": [
                         "aarch64"
-                    ]
+                    ],
+                    "x-checker-data": {
+                        "type": "json",
+                        "url": "https://pypi.org/pypi/numpy/json",
+                        "version-query": ".info.version",
+                        "url-query": "[.urls[] | select(.filename | test(\"-cp314-cp314-manylinux[^-]*_aarch64\\\\.whl$\"))][0].url"
+                    }
                 }
             ]
         }

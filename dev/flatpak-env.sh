@@ -1,8 +1,8 @@
 # Sourced by the dev scripts: which installed Flatpak to run Glowcast's code in.
 #
 # The Glowcast Flatpak itself once dev/build.sh has installed it. Until then the
-# Lumux Flatpak (the same GNOME runtime plus numpy) can host it, with permission
-# to use Glowcast's own D-Bus names.
+# Lumux Flatpak (a GNOME runtime plus numpy, possibly an older one than Glowcast's)
+# can host it, with permission to use Glowcast's own D-Bus names.
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 app=io.github.stensel8.glowcast

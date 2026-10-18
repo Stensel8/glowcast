@@ -1,6 +1,58 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigestsToSemver",
+    "docker:pinDigests"
+  ],
   "dependencyDashboard": true,
-  "schedule": ["before 6am on monday"]
+  "schedule": ["before 6am on monday"],
+  "pip-compile": {
+    "managerFilePatterns": ["/(^|/)requirements-dev\\.txt$/"]
+  },
+  "pip_requirements": {
+    "enabled": false
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "description": "Refreshes the dependencies of the dev tools in requirements-dev.txt"
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "The Flatpak's GNOME runtime, tracked through the flatpak-github-actions image of the same GNOME version",
+      "managerFilePatterns": ["/^flatpak/io\\.github\\.stensel8\\.glowcast\\.yml$/"],
+      "matchStrings": ["runtime-version: \"(?<currentValue>\\d+)\""],
+      "depNameTemplate": "ghcr.io/flathub-infra/flatpak-github-actions",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^(?<major>\\d+)$",
+      "extractVersionTemplate": "^gnome-(?<version>\\d+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "The runtime-version has no digest to pin",
+      "matchManagers": ["custom.regex"],
+      "pinDigests": false
+    },
+    {
+      "description": "The CI image's gnome-* tags follow GNOME versions",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["ghcr.io/flathub-infra/flatpak-github-actions"],
+      "versioning": "regex:^gnome-(?<major>\\d+)$"
+    },
+    {
+      "description": "Bump the GNOME runtime and its CI image in one PR",
+      "matchDepNames": ["ghcr.io/flathub-infra/flatpak-github-actions"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "GNOME runtime"
+    },
+    {
+      "description": "Each test job pins the Fedora release whose Python it tests, so only refresh its digest",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["fedora"],
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "enabled": false
+    }
+  ]
 }
