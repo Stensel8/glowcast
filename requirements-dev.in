@@ -1,0 +1,6 @@
+# Development tools (CI installs these on top of the system packages).
+# requirements-dev.txt pins them and their dependencies with hashes; regenerate it with
+#   pip-compile --generate-hashes --strip-extras requirements-dev.in
+# Dependabot and Renovate do this for you when they propose updates.
+pytest==9.1.1
+ruff==0.17.1

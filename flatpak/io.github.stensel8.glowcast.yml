@@ -1,6 +1,8 @@
 app-id: io.github.stensel8.glowcast
 runtime: org.gnome.Platform
-runtime-version: "50"
+# GNOME 51 ships Python 3.14, so python3-modules.json bundles numpy's cp314 wheels.
+# Renovate bumps this together with the gnome-* CI image in .github/workflows/ci.yml.
+runtime-version: "51"
 sdk: org.gnome.Sdk
 command: glowcast
 

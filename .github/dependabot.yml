@@ -1,9 +1,14 @@
 version: 2
 updates:
+  # requirements-dev.txt is compiled from requirements-dev.in with hashes;
+  # Dependabot re-runs pip-compile, so the hashes stay pinned.
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: weekly
+  # Actions are pinned to commit SHAs; Dependabot updates the SHA and the
+  # version comment after it. Renovate also refreshes the container images,
+  # the GNOME runtime and image digests, which Dependabot can't.
   - package-ecosystem: github-actions
     directory: /
     schedule:
