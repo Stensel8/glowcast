@@ -393,7 +393,6 @@ class BridgeWizard(Adw.NavigationPage):
     def _authenticate_worker(self):
         """Worker thread for authentication."""
         try:
-            self._temp_bridge = HueBridge(self.bridge_ip, "")
             result = HueBridge.create_user(self.bridge_ip)
             GLib.idle_add(self._on_auth_complete, result)
         except Exception as e:
@@ -416,8 +415,9 @@ class BridgeWizard(Adw.NavigationPage):
             self.auth_btn.set_label("Re-authenticate")
             self.auth_btn.set_sensitive(True)
 
-            # Try to connect the bridge
-            if self._temp_bridge and self._temp_bridge.connect():
+            # Step 3 reads the entertainment areas with the new key
+            self._temp_bridge = HueBridge(self.bridge_ip, self.app_key)
+            if self._temp_bridge.connect():
                 self.connect_status_row.set_subtitle("Connected!")
         else:
             self.connect_status_row.set_subtitle("Authentication failed. Press link button and try again.")
