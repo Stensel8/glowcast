@@ -59,6 +59,17 @@
   </branding>
 
   <releases>
+    <release version="0.1.1" date="2026-10-18">
+      <description>
+        <ul>
+          <li>Fixed: setting up a bridge for the first time could not read its entertainment areas</li>
+          <li>Bridge setup now says why it could not read the entertainment areas</li>
+          <li>A new app icon of Glowcast's own</li>
+          <li>Scenes are shown as colour swatches, like the music palettes</li>
+          <li>Runs on the GNOME 51 platform</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-10-18">
       <description>
         <p>First version of Glowcast, based on Lumux by Engin Kırmacı.</p>
