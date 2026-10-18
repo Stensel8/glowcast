@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Glowcast
+Comment=Sync your Hue lights with your screen, games and music
+Exec=glowcast
+Icon=io.github.stensel8.glowcast
+Terminal=false
+Type=Application
+Categories=Utility;GTK;
+Keywords=hue;philips;lights;sync;screen;ambilight;music;games;scenes;entertainment;
+StartupNotify=true
+StartupWMClass=io.github.stensel8.glowcast

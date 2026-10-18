@@ -1,0 +1,88 @@
+# .gitignore - Python project
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+
+# Pytest
+.pytest_cache/
+
+# Mypy
+.mypy_cache/
+
+# IDEs and editors
+# .vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# Coverage and reports
+.coverage
+coverage.xml
+htmlcov/
+
+# Testing and tooling
+.tox/
+.cache/
+
+# Local environment variables and configs
+*.env
+.env.*
+local_settings.py
+settings.json
+zones.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Ruff linter
+.ruff_cache/
+
+# Flatpak build
+flatpak/build/
+flatpak/.flatpak-builder/
+
+# Test outputs & logs
+*.log
+*.sqlite3
+*.db
+pip-selfcheck.json
+*/__pycache__/*
+*/*.pyc
+*/*/*.pyc
+/docs/*
+
+# Output of dev/screenshots.sh
+/dev/screenshots/
+
+# Third-party installers kept locally for reference: never commit
+/src/Windows and Mac/
+*.exe
+*.pkg
+*.dmg
+*.msi

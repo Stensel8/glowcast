@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check
+      - run: ruff format --check
+
+  test:
+    runs-on: ubuntu-latest
+    # Fedora ships current Python, PyGObject and GStreamer as packages
+    container: fedora:44
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install system packages
+        run: >
+          dnf install -y --setopt=install_weak_deps=False
+          python3 python3-pip python3-gobject python3-numpy
+          gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good
+          openssl coreutils
+      - run: pip install -r requirements-dev.txt
+      - run: python3 -m pytest -q
+
+  flatpak:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-50
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v5
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: glowcast.flatpak
+          manifest-path: flatpak/io.github.stensel8.glowcast.yml
+          cache-key: flatpak-builder-${{ github.sha }}

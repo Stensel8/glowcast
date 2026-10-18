@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.stensel8.glowcast</id>
+  <name>Glowcast</name>
+  <summary>Sync your Hue lights with your screen, games and music</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+
+  <developer id="io.github.stensel8">
+    <name>Sten T.</name>
+  </developer>
+
+  <launchable type="desktop-id">io.github.stensel8.glowcast.desktop</launchable>
+  <provides>
+    <binary>glowcast</binary>
+  </provides>
+
+  <description>
+    <p>
+      Glowcast syncs your Philips Hue lights with your screen, your games and your music,
+      or sets a scene, through your Hue entertainment area. It follows the official
+      Hue Sync app for Windows and macOS, in a native GNOME app for Wayland.
+    </p>
+    <ul>
+      <li>Video and Games: lights follow your screen, across several monitors</li>
+      <li>Music: lights follow your desktop audio, with colour palettes of your own</li>
+      <li>Scenes: Hue Sync's scene gallery, your own scenes and your bridge's scenes</li>
+      <li>Switch modes while syncing, and control Glowcast with keyboard shortcuts</li>
+      <li>Capture area, background lighting, sync delay and vocal filter</li>
+    </ul>
+    <p>
+      Screen capture goes through the desktop's screen-share dialog, and nothing you
+      watch or hear leaves your computer. Requires a Philips Hue Bridge with an
+      entertainment area set up in the Hue app.
+    </p>
+    <p>
+      Glowcast is based on Lumux by Engin Kırmacı. It is not affiliated with Signify
+      or Philips Hue.
+    </p>
+  </description>
+
+  <url type="homepage">https://github.com/Stensel8/glowcast</url>
+  <url type="bugtracker">https://github.com/Stensel8/glowcast/issues</url>
+  <url type="vcs-browser">https://github.com/Stensel8/glowcast</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/Stensel8/glowcast/main/assets/screenshots/music.png</image>
+      <caption>Music: lights follow your desktop audio</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Stensel8/glowcast/main/assets/screenshots/scenes.png</image>
+      <caption>Scenes: a gallery, your own scenes and your bridge's scenes</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Stensel8/glowcast/main/assets/screenshots/video.png</image>
+      <caption>Video: lights follow your screen, with a live preview</caption>
+    </screenshot>
+  </screenshots>
+
+  <content_rating type="oars-1.1"/>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#ba85d5</color>
+    <color type="primary" scheme_preference="dark">#ba85d5</color>
+  </branding>
+
+  <releases>
+    <release version="0.1.0" date="2026-10-18">
+      <description>
+        <p>First version of Glowcast, based on Lumux by Engin Kırmacı.</p>
+        <ul>
+          <li>Scenes, Games, Music and Video, switchable while syncing</li>
+          <li>Several monitors at once, with a capture area you drag on the live preview</li>
+          <li>Music palettes and scenes of your own, plus the scenes on your bridge</li>
+          <li>The window glows with your lights</li>
+          <li>Keyboard shortcuts, sync delay, background lighting and a vocal filter</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+</component>
