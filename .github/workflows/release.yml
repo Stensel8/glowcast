@@ -1,0 +1,70 @@
+# Builds the Flatpak bundle for a published GitHub release and attaches it as
+# glowcast-<version>-x86_64.flatpak. The release text is that version's
+# section of CHANGELOG.md.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check that the tag, changelog and metainfo agree on the version
+        id: version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(python3 -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          fail() { echo "::error::$1"; exit 1; }
+          [ "$TAG" = "v$version" ] || fail "Tag $TAG does not match version $version in pyproject.toml"
+          grep -q "^__version__ = \"$version\"$" src/glowcast/__init__.py || fail "src/glowcast/__init__.py is not at $version"
+          grep -q "^## $version$" CHANGELOG.md || fail "CHANGELOG.md has no section for $version"
+          grep -q "<release version=\"$version\"" data/io.github.stensel8.glowcast.metainfo.xml ||
+            fail "The metainfo has no release entry for $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  bundle:
+    needs: check
+    runs-on: ubuntu-latest
+    container:
+      # Same GNOME version as runtime-version in the manifest
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51@sha256:78d969b18225ae107ca29497bf09c4a3f791e5f1838a9a912a529d0024fb6210
+      options: --privileged
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@79327416609af08178ad73b352877e51450790b3 # v6.8
+        with:
+          bundle: glowcast.flatpak
+          artifact-name: glowcast-flatpak
+          manifest-path: flatpak/io.github.stensel8.glowcast.yml
+          cache-key: flatpak-builder-release-${{ github.sha }}
+
+  attach:
+    needs: [check, bundle]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: glowcast-flatpak
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+          FILE: glowcast-${{ needs.check.outputs.version }}-x86_64.flatpak
+        run: |
+          mv glowcast.flatpak "$FILE"
+          gh release upload "$TAG" "$FILE" --clobber --repo "$GITHUB_REPOSITORY"
